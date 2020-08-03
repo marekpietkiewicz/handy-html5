@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+    <title>Big for loop</title>
+
+    <script>
+        var worker = new Worker('js/bigLoop.js');
+
+        worker.onmessage = function (event) {
+            if (!!event.data && !!event.data.cmd && !!event.data.res) {
+                if (event.data.cmd === "counter") {
+                    console.log("Completed " + event.data.res + " iterations");
+                } else {
+                    console.log(event.data.res);
+                }
+            }
+        };
+
+        worker.onerror = function (event) {
+            console.log(event.message, event);
+        };
+
+        function sayHello() {
+            console.log("Hello sir....");
+        }
+
+        function callWorker() {
+            worker.postMessage("start");
+        }
+
+    </script>
+</head>
+
+<body>
+    <input type="button" onclick="sayHello();" value="Say Hello" />
+    <input type="button" onclick="callWorker();" value="Call Worker" />
+</body>
+
+</html>
